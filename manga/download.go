@@ -72,7 +72,11 @@ func downPage(dirName string, savePath string, chpages <-chan Page) bool {
 
 func (vol *Volume) DownloadByVolume(savePath string, cbz bool) int {
 	numOfChDownloaded := 0
-	pathToVolume := savePath + "/" + vol.VolNum
+	volTitle := vol.VolNum
+	if vol.VolNum == "Volume Not Available" {
+		volTitle = "Volume 0"
+	}
+	pathToVolume := savePath + "/" + volTitle
 	CreateDirIfNotExist(pathToVolume)
 	chapters := vol.chapters
 	for i := range chapters {
