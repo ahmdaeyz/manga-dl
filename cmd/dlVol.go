@@ -19,7 +19,6 @@ import (
 	"log"
 	"manga-dl/manga"
 	"os/user"
-	"strconv"
 	"strings"
 )
 
@@ -27,18 +26,18 @@ import (
 var dlVolCmd = &cobra.Command{
 	Use:   "dlVol",
 	Short: "Download a specific volume",
-	Long:  `NOTE: volumes with no number ain't supported currently\nyou may download the whole manga\nwith "dl"'`,
+	Long:  `NOTE: for vTBD just enter what is there\nyou may download the whole manga\nwith "dl" if the volume name is not available'`,
 	Run: func(cmd *cobra.Command, args []string) {
 		mng := manga.GetManga(args[0])
 		volumes := mng.GetVolumes()
 		dirPath, err := cmd.Flags().GetString("output-dir")
 		cbz, err := cmd.Flags().GetBool("cbz")
-		volNum, err := cmd.Flags().GetFloat64("vol-num")
+		volNum, err := cmd.Flags().GetString("vol-num")
 		if err != nil {
 			log.Fatal(err)
 		}
 		for _, volume := range volumes {
-			if strings.Contains(volume.VolNum, strconv.FormatFloat(volNum, 'f', 1, 64)) {
+			if strings.Contains(volume.VolNum, volNum) {
 				volume.DownloadByVolume(dirPath, cbz)
 				break
 			}
@@ -53,7 +52,7 @@ func init() {
 	}
 	dlVolCmd.Flags().BoolP("cbz", "z", false, "compress to comic book zip")
 	dlVolCmd.Flags().StringP("output-dir", "o", user.HomeDir, "Specifies the output directory.")
-	dlVolCmd.Flags().Float64P("vol-num", "n", 1, "volume number")
+	dlVolCmd.Flags().StringP("vol-num", "n", "01", "volume number")
 	rootCmd.AddCommand(dlVolCmd)
 
 }
