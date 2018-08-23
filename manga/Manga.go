@@ -58,7 +58,9 @@ func GetManga(url string) Manga {
 		volumeBounds = strings.Replace(volumeBounds, "Chapter ", "", -1)
 		chaps := strings.Split(volumeBounds, " - ")
 		startCh, _ = strconv.ParseFloat(chaps[0], 64)
-		endCh, _ = strconv.ParseFloat(chaps[1], 64)
+		if len(chaps) == 2 {
+			endCh, _ = strconv.ParseFloat(chaps[1], 64)
+		}
 		volumes = append(volumes, Volume{VolNum: volNum, startCh: startCh, endCh: endCh})
 	}
 	//*2*
