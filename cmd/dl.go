@@ -15,12 +15,12 @@
 package cmd
 
 import (
-		"github.com/spf13/cobra"
-		"manga-dl/manga"
-		"fmt"
-		"strings"
-		"log"
+	"fmt"
+	"github.com/spf13/cobra"
+	"log"
+	"manga-dl/manga"
 	"os/user"
+	"strings"
 )
 
 // dlCmd represents the dl command
@@ -35,20 +35,20 @@ var dlCmd = &cobra.Command{
 		mangaName = strings.Replace(mangaName, "/", "", -1)
 		dirPath, err := cmd.Flags().GetString("output-dir")
 		cbz, err := cmd.Flags().GetBool("cbz")
-		byVolume,err:=cmd.Flags().GetBool("by-vol")
-		byChapter,err:=cmd.Flags().GetBool("by-ch")
+		byVolume, err := cmd.Flags().GetBool("by-vol")
+		byChapter, err := cmd.Flags().GetBool("by-ch")
 		if err != nil {
 			log.Fatal(err)
 		}
 		manga.CreateDirIfNotExist(dirPath + "/" + mangaName)
-		if byVolume{
-			for i:=len(volumes)-1;i>=0 ;i-- {
+		if byVolume {
+			for i := len(volumes) - 1; i >= 0; i-- {
 				volumes[i].DownloadByVolume(dirPath+"/"+mangaName, cbz)
 			}
-		}else if byChapter{
-			for i:=len(volumes)-1;i>=0 ;i--{
-				for _,chapter:= range volumes[i].GetChapters(){
-					chapter.DownloadByChapter(dirPath + "/" + mangaName,cbz)
+		} else if byChapter {
+			for i := len(volumes) - 1; i >= 0; i-- {
+				for _, chapter := range volumes[i].GetChapters() {
+					chapter.DownloadByChapter(dirPath+"/"+mangaName, cbz)
 				}
 			}
 		}
@@ -57,14 +57,14 @@ var dlCmd = &cobra.Command{
 }
 
 func init() {
-	user,err:=user.Current()
-	if err!=nil{
+	usr, err := user.Current()
+	if err != nil {
 		log.Fatal(err)
 	}
-	dlCmd.Flags().BoolP("cbz","z",false,"Compress the chapters or volumes to comic book zip\nthe output is a file for each volume or chapter.")
-	dlCmd.Flags().StringP("output-dir","o",user.HomeDir,"Specifies the output directory.")
-	dlCmd.Flags().BoolP("by-vol","v",false,"Download by volume")
-	dlCmd.Flags().BoolP("by-ch","c",true,"Download by chapter")
+	dlCmd.Flags().BoolP("cbz", "z", false, "Compress the chapters or volumes to comic book zip\nthe output is a file for each volume or chapter.")
+	dlCmd.Flags().StringP("output-dir", "o", usr.HomeDir, "Specifies the output directory.")
+	dlCmd.Flags().BoolP("by-vol", "v", false, "Download by volume")
+	dlCmd.Flags().BoolP("by-ch", "c", true, "Download by chapter")
 	rootCmd.AddCommand(dlCmd)
 
 }
