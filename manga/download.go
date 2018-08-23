@@ -83,6 +83,6 @@ func (vol *Volume) DownloadByVolume(savePath string, cbz bool) int {
 		cbzPath, _ := os.Create(pathToVolume + ".cbz")
 		zip2.Archive(pathToVolume, cbzPath, nil)
 	}
-	fmt.Println("Volume", vol.VolNum, "downloaded.")
+	fmt.Println(vol.VolNum, "downloaded.")
 	return numOfChDownloaded
 }
