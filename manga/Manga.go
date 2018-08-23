@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"sort"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -16,7 +17,7 @@ type Manga struct {
 }
 
 type Volume struct {
-	VolNum   float64
+	VolNum   string
 	startCh  float64
 	endCh    float64
 	chapters []Chapter
@@ -27,7 +28,7 @@ type Chapter struct {
 	url        string
 	ChapterNum float64
 	numOfPages int
-	volNum     float64
+	volNum     string
 }
 
 func GetManga(url string) Manga {
@@ -50,22 +51,15 @@ func GetManga(url string) Manga {
 	rand.Seed(time.Now().Unix())
 	//volume data : smth similar to volume 24 30-40
 	for _, str := range volumesData {
-		var volNum, startCh, endCh float64
-		hmm, _ := regexp.Compile("[0-9]{1,4}(\\.[0-9])?")
-		matcher := hmm.FindAllString(str, -1)
-		//first condition for volumes with no number like TBD...
-		//TODO:change this into a string and drop the random num solution
-		if len(matcher) < 3 {
-			volNum = float64(rand.Intn(700) + 1000)
-			startCh, _ = strconv.ParseFloat(matcher[0], 64)
-			endCh, _ = strconv.ParseFloat(matcher[1], 64)
-			volumes = append(volumes, Volume{VolNum: volNum, startCh: startCh, endCh: endCh})
-		} else {
-			volNum, _ = strconv.ParseFloat(matcher[0], 64)
-			startCh, _ = strconv.ParseFloat(matcher[1], 64)
-			endCh, _ = strconv.ParseFloat(matcher[2], 64)
-			volumes = append(volumes, Volume{VolNum: volNum, startCh: startCh, endCh: endCh})
-		}
+		var startCh, endCh float64
+		index := strings.Index(str, "C")
+		volNum := strings.Replace(str, str[index-1:], "", -1)
+		volumeBounds := strings.Replace(str, str[:index], "", -1)
+		volumeBounds = strings.Replace(volumeBounds, "Chapter ", "", -1)
+		chaps := strings.Split(volumeBounds, " - ")
+		startCh, _ = strconv.ParseFloat(chaps[0], 64)
+		endCh, _ = strconv.ParseFloat(chaps[1], 64)
+		volumes = append(volumes, Volume{VolNum: volNum, startCh: startCh, endCh: endCh})
 	}
 	//*2*
 	chapters := GetChapters(url)
@@ -137,7 +131,7 @@ func CreateDirIfNotExist(dir string) {
 		}
 	}
 }
-func (ch *Chapter) setVolumeNum(volNum float64) {
+func (ch *Chapter) setVolumeNum(volNum string) {
 	ch.volNum = volNum
 }
 func (vol *Volume) appendChToVolume(ch Chapter) {
