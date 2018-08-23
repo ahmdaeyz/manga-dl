@@ -37,7 +37,7 @@ var dlVolCmd = &cobra.Command{
 			log.Fatal(err)
 		}
 		for _, volume := range volumes {
-			if strings.Replace(volume.VolNum, "Volume ", "", -1) == volNum {
+			if Num := strings.Replace(volume.VolNum, "Volume ", "", -1); Num == volNum {
 				volume.DownloadByVolume(dirPath, cbz)
 				break
 			}
