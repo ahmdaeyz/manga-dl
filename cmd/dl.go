@@ -16,11 +16,12 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"log"
-	"manga-dl/manga"
 	"os/user"
 	"strings"
+
+	"github.com/ahmdaeyz/manga-dl/manga"
+	"github.com/spf13/cobra"
 )
 
 // dlCmd represents the dl command

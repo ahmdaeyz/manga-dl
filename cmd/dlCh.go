@@ -15,10 +15,11 @@
 package cmd
 
 import (
-		"github.com/spf13/cobra"
 	"log"
 	"os/user"
-	"manga-dl/manga"
+
+	"github.com/ahmdaeyz/manga-dl/manga"
+	"github.com/spf13/cobra"
 )
 
 // dlChCmd represents the dlCh command
@@ -26,16 +27,16 @@ var dlChCmd = &cobra.Command{
 	Use:   "dlCh",
 	Short: "Download a specific chapter",
 	Run: func(cmd *cobra.Command, args []string) {
-		chapters:=manga.GetChapters(args[0])
+		chapters := manga.GetChapters(args[0])
 		cbz, err := cmd.Flags().GetBool("cbz")
-		chNum,err:=cmd.Flags().GetFloat64("ch-num")
+		chNum, err := cmd.Flags().GetFloat64("ch-num")
 		dirPath, err := cmd.Flags().GetString("output-dir")
 		if err != nil {
 			log.Fatal(err)
 		}
-		for _,chapter:= range chapters{
-			if chapter.ChapterNum==chNum{
-				chapter.DownloadByChapter(dirPath,cbz)
+		for _, chapter := range chapters {
+			if chapter.ChapterNum == chNum {
+				chapter.DownloadByChapter(dirPath, cbz)
 				break
 			}
 		}
@@ -44,13 +45,13 @@ var dlChCmd = &cobra.Command{
 }
 
 func init() {
-	user,err:=user.Current()
-	if err!=nil{
+	user, err := user.Current()
+	if err != nil {
 		log.Fatal(err)
 	}
-	dlChCmd.Flags().BoolP("cbz","z",false,"compress to comic book zip")
-	dlChCmd.Flags().StringP("output-dir","o",user.HomeDir,"Specifies the output directory.")
-	dlChCmd.Flags().Float64P("ch-num","n",1,"chapter number")
+	dlChCmd.Flags().BoolP("cbz", "z", false, "compress to comic book zip")
+	dlChCmd.Flags().StringP("output-dir", "o", user.HomeDir, "Specifies the output directory.")
+	dlChCmd.Flags().Float64P("ch-num", "n", 1, "chapter number")
 	rootCmd.AddCommand(dlChCmd)
 
 }

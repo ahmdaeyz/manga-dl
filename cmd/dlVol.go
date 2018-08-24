@@ -15,11 +15,12 @@
 package cmd
 
 import (
-	"github.com/spf13/cobra"
 	"log"
-	"manga-dl/manga"
 	"os/user"
 	"strings"
+
+	"github.com/ahmdaeyz/manga-dl/manga"
+	"github.com/spf13/cobra"
 )
 
 // dlVolCmd represents the dlVol command

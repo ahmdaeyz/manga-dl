@@ -14,7 +14,7 @@
 
 package main
 
-import "manga-dl/cmd"
+import "github.com/ahmdaeyz/manga-dl/cmd"
 
 func main() {
 	cmd.Execute()
