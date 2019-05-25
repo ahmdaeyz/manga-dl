@@ -8,6 +8,7 @@ _____   |  |__   _____   __| _/_____     ____  ___.__.________
      \/      \/      \/     \/      \/      \/ \/           \/
                            manga-dl
 ```
+#### NOT MAINTAINED
 ##### a CLI tool to download mangas from the popular manga site [**fanfox**](http://fanfox.net/ "fanfox")
 ##### with just the url!
 ###### if u have go installed grab it with : 
